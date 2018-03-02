@@ -13,11 +13,11 @@
   <div id="app" class="container">
     <div class="row justify-content-md-center">
       <div class="col-md-1">
-          <div class="btn-group-vertical" role="group" aria-label="Button group with nested dropdown">
-              <button type="button" class="btn btn-secondary">{{ item.text }}</button>
-            </div>
+        <div class="btn-group-vertical" role="group" aria-label="Button group with nested dropdown" v-for="item in menus">
+          <button type="button" class="btn btn-secondary">{{ item.text }}</button>
+        </div>
       </div>
-      
+
       <div class="col-md-6 mt-5">
         <div class="list-group">
           <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" v-for="item in tasks">
@@ -47,24 +47,27 @@
     for (let i = 0; i < 10; i++) {
       tasks.push({
         title: 'task' + (i + 1),
+        /* index: i + 1, */
         content: 'content' + (i + 1),
         completed: false,
         createAt: (new Date()).toString()
       })
     }
     return tasks
-  }();  //??
+  }();
   var app = new Vue({
     el: '#app',
     data: {
       menus: [
         { text: '未完成' },
         { text: '已完成' }],
-      task: tasks
+      task: tasks,      
     },
     methods: {
       onCompleted() {
-        console.log('-----');
+        this.tasks[index].completed = true;
+        /* return this.tasks; */
+        this.save();
       }
     }
   })
