@@ -14,26 +14,20 @@
     <div class="row justify-content-md-center">
       <div class="col-md-1">
         <div class="btn-group-vertical" role="group" aria-label="Button group with nested dropdown" v-for="item in menus">
-          <button type="button" class="btn btn-secondary">{{ item.text }}</button>
+          <button type="button" class="btn btn-secondary" v-on:click="onSelected(item.tag)">{{ item.text }}</button>
         </div>
       </div>
 
-      <div class="col-md-6 mt-5">
-        <div class="list-group">
-          <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" v-for="item in tasks">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">{{ item.title }}</h5>
-              <small>{{ item.createAt}}</small>
-            </div>
-            <p class="mb-1">{{ item.content }}</p>
-            <small v-if="item.completed">已完成</small>
-            <div class="float-right" v-else>
-              <button class="btn btn-primary btn-ms" v-on:click="onCompleted">待完成</button>
-            </div>
-          </a>
-          "
-        </div>
+      <div class="col-md-6 mt-5" v-if="currentMenu === 'completed'">
+          <div class="list-group">
+              <task-item v-bind:item="item" v-bind:tag="'completed'" v-for="item in tasks"></task-item>
+          </div>
+        
       </div>
+      <div class="col-md-6 mt-5" v-else>
+          <div class="list-group">
+              <task-item v-bind:item="item" v-bind:tag="'working'" v-for="item in tasks"></task-item>
+          </div>
     </div>
 
   </div>
@@ -42,6 +36,29 @@
 </html>
 
 <script>
+  Vue.component('task-item',{
+    props: ['item','tag'],
+    template:`
+    
+          <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" v-if='item.tag===tag'>
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">{{ item.title }}</h5>
+              <small>{{ item.createAt}}</small>
+            </div>
+            <p class="mb-1">{{ item.content }}</p>
+            <small v-if="item.completed">已完成</small>
+            <div class="float-right" v-else>
+              <button class="btn btn-primary btn-ms" v-on:click="onCompleted">待完成</button>
+            </div>    
+          </a>
+        `,
+        methods: {
+          onCompleted(){
+            console.log('----')
+          }
+        }
+  })
+
   var tasks = function () {
     let tasks = [];
     for (let i = 0; i < 10; i++) {
@@ -49,8 +66,9 @@
         title: 'task' + (i + 1),
         /* index: i + 1, */
         content: 'content' + (i + 1),
+        tag: 'working',
         completed: false,
-        createAt: (new Date()).toString()
+        createAt: (new Date()).toString(),
       })
     }
     return tasks
@@ -59,15 +77,26 @@
     el: '#app',
     data: {
       menus: [
-        { text: '未完成' },
-        { text: '已完成' }],
-      task: tasks,      
+        {
+          text: '未完成',
+          tag: 'completed'
+        },
+        {
+          text: '已完成',
+          tag: 'working'
+        }],
+      task: tasks,
+      currentMenu: 0,
     },
     methods: {
       onCompleted() {
-        this.tasks[index].completed = true;
-        /* return this.tasks; */
-        this.save();
+        /* console.log('-----'); */
+        this.task.tag = completed;
+        
+      },
+      onSelected(tag) {
+        /* console.log('---' + index); */
+        this.currentMenu = tag;
       }
     }
   })
