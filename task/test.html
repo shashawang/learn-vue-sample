@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!-- import CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+    <el-container id="app">
+        <el-aside width="200px"></el-aside>
+        <el-container>
+          <el-header>
+                <el-button-group>
+                        <el-button type="primary">已完成</el-button>
+                        <el-button type="primary">未完成</el-button>
+                      </el-button-group>
+          </el-header>
+          <el-main>
+                <el-card class="box-card">
+                        <div slot="header" class="clearfix">
+                          <span>todo-list</span>
+                          <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+                        </div>
+                        <div v-for="item in task" :key="item" class="text item">
+                            <div>
+                                <span>{{ task.title }}</span>
+                                <span>{{ new Date() }}</span>
+                            </div>
+                            <div>
+                                    <span>{{ task.content }}</span>
+                                    <span>{{ task.tag }}</span>                                  
+                            </div>                          
+                        </div>
+                      </el-card>
+          </el-main>
+        </el-container>
+      </el-container>
+
+</body>
+  <!-- import Vue before Element -->
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script>
+      let task = function(){
+          let task = [],
+          for (let i = 0; i < 100; i++) {
+              task.push({
+                title:'task'+(i+1),
+                content:'content'+(i+1),
+                tag:'未完成',
+              })                              
+          }
+          console.log('1')        
+              return task 
+          }()
+      
+
+    new Vue({
+      el: '#app',
+      data: {
+          task:task,
+      }
+    })
+  </script>
+</html>
